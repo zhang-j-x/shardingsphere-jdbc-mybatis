@@ -16,10 +16,8 @@
         order_id, user_id, status, time, amount
     </sql>
 
-    <select id="qryOrderPage" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select *
-    from t_order
-    where user_id = #{userId}
+    <select id="subQuery" resultMap="BaseResultMap">
+        SELECT  * from  (SELECT * FROM t_order WHERE user_id = 1) A where status = 'FINISH';
     </select>
 
 </mapper>

@@ -13,6 +13,7 @@ spring:
         username: root
         password: 123456
       sharding-sphere1:
+        #和 druid整合必须为url
         url: jdbc:mysql://127.0.0.1:3306/sharding-sphere1?autoReconnect=true&useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&useSSL=false
       sharding-sphere2:
         url: jdbc:mysql://127.0.0.1:3306/sharding-sphere2?autoReconnect=true&useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&useSSL=false

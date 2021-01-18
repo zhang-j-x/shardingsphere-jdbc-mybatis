@@ -1,17 +1,10 @@
 package com.jx.shardingsphere;
 
-import com.jx.shardingsphere.dao.OrderMapper;
-import com.jx.shardingsphere.entity.Order;
-import com.jx.shardingsphere.entity.enums.OrderStatusEnum;
+import com.jx.shardingsphere.service.IOrderService;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.Random;
-import java.util.stream.IntStream;
 
 /**
  * @Description:
@@ -23,24 +16,20 @@ import java.util.stream.IntStream;
 public class Test {
 
     @Autowired
-    private OrderMapper orderMapper;
+    private IOrderService orderService;
 
-    /***
-     * 20条数据耗时 900ms左右
-     * 100条数据耗时 1400ms左右
-     */
     @org.junit.Test
-    public void insertSharding(){
-        long start = System.currentTimeMillis();
-        IntStream.range(1,100).forEach( e -> {
-            Order order = new Order();
-            order.setUserId(e);
-            order.setStatus(OrderStatusEnum.NEW);
-            order.setTime(LocalDateTime.now());
-            order.setAmount(BigDecimal.valueOf(new Random().nextInt(200)));
-            orderMapper.insert(order);
-        });
-        long end = System.currentTimeMillis();
-        System.out.println("耗时：" + (end - start));
+    public void testSharding(){
+//        orderService.insertSharding();
+//        orderService.qryOrdersBroadcast();
+//        orderService.qryOrdersByUserId();
+//        orderService.qryOrderByOrderId();
+//        orderService.qryOrderByUserIdAndOrderId();
+//        orderService.qryOrdersByPage();
+//        orderService.update();
+        orderService.subQuery();
     }
+
+
+
 }
