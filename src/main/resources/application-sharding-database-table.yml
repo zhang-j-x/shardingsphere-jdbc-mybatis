@@ -1,0 +1,54 @@
+
+#=================分库分表======================
+spring:
+  shardingsphere:
+    props:
+      sql-show: true
+    #数据库信息
+    datasource:
+      names: sharding-sphere1,sharding-sphere2
+      common:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        username: root
+        password: 123456
+      sharding-sphere1:
+        url: jdbc:mysql://127.0.0.1:3306/sharding-sphere1?autoReconnect=true&useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&useSSL=false
+      sharding-sphere2:
+        url: jdbc:mysql://127.0.0.1:3306/sharding-sphere2?autoReconnect=true&useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&useSSL=false
+    #分库分表信息
+    rules:
+      sharding:
+        #分库分表说明 分库字段 分表字段 自增主键
+        tables:
+          t_order:
+            actual-data-nodes: sharding-sphere$->{1..2}.t_order$->{1..2}
+            database-strategy:
+              standard:
+                sharding-column: user_id
+                sharding-algorithm-name: database-inline
+            table-strategy:
+              standard:
+                sharding-column: order_id
+                sharding-algorithm-name: table-inline
+            key-generate-strategy:
+              column: order_id
+              key-generator-name: SNOWFLAKE
+        #分库分表算法
+        sharding-algorithms:
+          database-inline:
+            type: INLINE
+            props:
+              algorithm-expression: sharding-sphere$->{user_id % 2 + 1}
+          table-inline:
+            type: INLINE
+            props:
+              algorithm-expression: t_order$->{order_id % 2 + 1}
+        #自增主键生成策略
+        key-generators:
+          snowflake:
+            type: SNOWFLAKE
+            props:
+              worker-id: 123
+
+

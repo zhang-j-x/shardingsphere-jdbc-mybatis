@@ -1,0 +1,17 @@
+spring:
+  profiles:
+    active: sharding-database-table
+
+mybatis-plus:
+  type-enums-package: com.jx.shardingsphere.entity.enums
+  mapper-locations: classpath:mapper/*.xml
+  typeAliasesPackage: com.jx.shardingsphere.entity
+  global-config:
+    id-type: 0  #0:数据库ID自增   1:用户输入id  2:全局唯一id(IdWorker)  3:全局唯一ID(uuid)
+    db-column-underline: false
+    refresh-mapper: true
+  configuration:
+    map-underscore-to-camel-case: false
+    cache-enabled: true
+    lazyLoadingEnabled: true
+    multipleResultSetsEnabled: true
