@@ -17,6 +17,4 @@ shardingsphere-jdbc + mybatis + druid整合
 
 
 
-## 2、集成过程
-
 
