@@ -34,7 +34,7 @@ spring:
                 sharding-algorithm-name: table-inline
             key-generate-strategy:
               column: order_id
-              key-generator-name: SNOWFLAKE
+              key-generator-name: snowflake
         #分库分表算法
         sharding-algorithms:
           database-inline:

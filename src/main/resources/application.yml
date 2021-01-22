@@ -1,7 +1,8 @@
 spring:
   profiles:
-    active: sharding-database-table #分库分表
+#    active: sharding-database-table #分库分表
 #    active: sharding-table #分表
+     active: read-write-splitting #读写分离
 
 mybatis-plus:
   type-enums-package: com.jx.shardingsphere.entity.enums

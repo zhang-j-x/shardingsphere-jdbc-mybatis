@@ -44,4 +44,10 @@ public interface IOrderService {
 
     List<Order> subQuery();
 
+
+    /**
+     * 读写分离指定主库查询
+     * @return
+     */
+    List<Order> qryOrdersByUserIdFromMaster();
 }

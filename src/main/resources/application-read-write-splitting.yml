@@ -1,0 +1,63 @@
+##=================读写分离======================
+
+  spring:
+    shardingsphere:
+      props:
+        sql-show: true
+      datasource:
+        names: primary-ds,replica-ds-0
+        common:
+          type: com.alibaba.druid.pool.DruidDataSource
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          username: root
+          password: d3eb23f714529f1e73f934876d1b39
+        primary-ds:
+          url: jdbc:mysql://192.168.232.88:3307/sharding-sphere-rws?serverTimezone=UTC&useSSL=false
+        replica-ds-0:
+          url: jdbc:mysql://192.168.232.88:3308/sharding-sphere-rws?serverTimezone=UTC&useSSL=false
+      rules:
+        replica-query:
+          data-sources:
+            #不分表用pr_ds 否则用实际数据库名
+            sharding-sphere-rws:
+              primary-data-source-name: primary-ds
+              replica-data-source-names: replica-ds-0
+              load-balancer-name: round-robin
+          load-balancers:
+            round-robin:
+              type: ROUND_ROBIN
+              props:
+                default: 0
+        sharding:
+          #分库分表说明 分库字段 分表字段 自增主键
+          tables:
+            t_order:
+              actual-data-nodes: sharding-sphere-rws.t_order$->{1..2}
+              table-strategy:
+                standard:
+                  sharding-column: order_id
+                  sharding-algorithm-name: table-inline
+              key-generate-strategy:
+                column: order_id
+                key-generator-name: snowflake
+          #分库分表算法
+          sharding-algorithms:
+            table-inline:
+              type: INLINE
+              props:
+                algorithm-expression: t_order$->{order_id % 2 + 1}
+          #自增主键生成策略
+          key-generators:
+            snowflake:
+              type: SNOWFLAKE
+              props:
+                worker-id: 123
+
+
+
+
+
+
+
+
+

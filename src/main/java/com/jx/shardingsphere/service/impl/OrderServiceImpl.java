@@ -9,13 +9,13 @@ import com.jx.shardingsphere.dao.OrderMapper;
 import com.jx.shardingsphere.entity.Order;
 import com.jx.shardingsphere.entity.enums.OrderStatusEnum;
 import com.jx.shardingsphere.service.IOrderService;
+import org.apache.shardingsphere.infra.hint.HintManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.IntStream;
 
 /**
@@ -125,4 +125,26 @@ public class OrderServiceImpl implements IOrderService {
     public List<Order> subQuery() {
         return orderMapper.subQuery();
     }
+
+    @Override
+    public List<Order> qryOrdersByUserIdFromMaster() {
+        //指定从主库查
+        HintManager.getInstance().setPrimaryRouteOnly();
+        long start = System.currentTimeMillis();
+        QueryWrapper<Order> wrapper = new QueryWrapper<>();
+        wrapper.lambda().eq(Order::getUserId,1);
+        List<Order> orders = orderMapper.selectList(wrapper);
+        System.out.println(JSON.toJSONString(orders));
+        long end = System.currentTimeMillis();
+        System.out.println("耗时：" + (end - start));
+        HintManager.clear();
+        return orders;
+    }
+
+
+    public static void main(String[] args) {
+        Map map = new HashMap();
+        Iterator iterator = map.entrySet().iterator();
+    }
+
 }

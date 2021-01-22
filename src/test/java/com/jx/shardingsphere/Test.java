@@ -27,7 +27,9 @@ public class Test {
 //        orderService.qryOrderByUserIdAndOrderId();
 //        orderService.qryOrdersByPage();
 //        orderService.update();
-        orderService.subQuery();
+//        orderService.subQuery();
+        orderService.qryOrdersByUserIdFromMaster();
+        orderService.qryOrdersByUserId();
     }
 
 
